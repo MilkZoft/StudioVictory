@@ -7,6 +7,9 @@ var path = require('path');
 // Initializing express application
 var app = express();
 
+// Loading Config
+var config = require('./lib/config');
+
 // Body Parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -28,16 +31,16 @@ var stylus = require('stylus');
 var nib = require('nib');
 
 // Handlebars setup
-app.engine('.hbs', exphbs({
-    extname: '.hbs',
-    defaultLayout: 'main',
-    layoutsDir: __dirname + '/views/layouts',
-    partialsDir: __dirname + '/views/partials'
+app.engine(config().views.engine, exphbs({
+  extname: config().views.extension,
+  defaultLayout: config().views.layout,
+  layoutsDir: __dirname + '/views/layouts',
+  partialsDir: __dirname + '/views/partials'
 }));
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', '.hbs');
+app.set('view engine', config().views.engine);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
@@ -49,33 +52,33 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
+  });
 }
 
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
 // Export application or start the server
 if (!!module.parent) {
-    module.exports = app;
+  module.exports = app;
 } else {
-    app.listen(3000);
+  app.listen(config().serverPort);
 }
