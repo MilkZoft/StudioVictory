@@ -16,7 +16,6 @@ module.exports = function(grunt) {
       },
       src: [
         'Gruntfile.js',
-        'grunt/**/*.js',
         'src/**/*.js',
         '!src/public/bower_components/**'
       ]
@@ -28,7 +27,6 @@ module.exports = function(grunt) {
       },
       src: [
         'Gruntfile.js',
-        'grunt/**/*.js',
         'src/**/*.js',
         '!src/public/bower_components/**'
       ]
