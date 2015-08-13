@@ -5,10 +5,36 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-githooks');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadTasks('grunt');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: {
+      all: {
+        src: 'dist'
+      },
+    },
+    copy: {
+      all: {
+        expand: true,
+        cwd: '',
+        src: [
+          '.jshintrc',
+          '.jscsrc',
+          '.bowerrc',
+          '*.*',
+          './bin/**/*',
+          './node_modules/**/*',
+          './src/**/*',
+          './grunt/**/*',
+          './logs/**/*'
+        ],
+        dest: 'dist'
+      }
+    },
     jscs: {
       options: {
         config: '.jscsrc',
@@ -49,29 +75,29 @@ module.exports = function(grunt) {
       npmInstall: {
         command: 'npm install'
       },
-      serverLogs: {
-        command: 'pm2 logs'
+      vagrantLogs:  {
+        command: 'vagrant ssh -c "cd /vagrant && pm2 logs"'
       },
-      serverStatus: {
-        command: 'pm2 list'
+      vagrantStatus: {
+        command: 'vagrant ssh -c "cd /vagrant && pm2 list"'
       },
-      serverStop: {
-        command: 'pm2 kill'
+      vagrantStop: {
+        command: 'vagrant ssh -c "cd /vagrant && pm2 kill"'
       },
-      serverDelete: {
-        command: 'pm2 delete pm2.json'
+      vagrantDelete: {
+        command: 'vagrant ssh -c "cd /vagrant && pm2 delete pm2.json"'
       },
-      serverStart: {
-        command: 'pm2 start pm2.json'
+      vagrantStart: {
+        command: 'vagrant ssh -c "cd /vagrant && pm2 start pm2.json"'
+      },
+      vagrantStartDist: {
+        command: 'vagrant ssh -c "cd /vagrant/dist && pm2 start pm2.json"'
       }
-    }
+    },
   });
 
-  grunt.registerTask('default', ['analyze']);
+  grunt.registerTask('default', ['test']);
+  grunt.registerTask('test', 'Runs unit tests', ['mochaTest', 'karma:client']);
   grunt.registerTask('analyze', 'Validates code style', ['jshint', 'jscs']);
-  grunt.registerTask('status', 'Shows status of node processes', ['shell:serverStatus']);
-  grunt.registerTask('stop', 'Stop node processes', ['shell:serverStop']);
-  grunt.registerTask('start', 'Start node processes', ['shell:serverStart']);
-  grunt.registerTask('restart', 'Restart node processes', ['stop', 'start']);
-  grunt.registerTask('logs', 'Tail logs for all pm2 processes', ['shell:serverLogs']);
+  grunt.registerTask('deploy', 'Deploys code', ['clean', 'copy', 'stylus']);
 };
