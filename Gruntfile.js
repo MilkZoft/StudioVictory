@@ -1,13 +1,16 @@
 'use strict';
 
 module.exports = function(grunt) {
-  grunt.loadNpmTasks('grunt-jscs');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-githooks');
-  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-stylus');
+  grunt.loadNpmTasks('grunt-githooks');
+  grunt.loadNpmTasks('grunt-jscs');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadTasks('grunt');
 
   grunt.initConfig({
@@ -42,7 +45,9 @@ module.exports = function(grunt) {
       },
       src: [
         'Gruntfile.js',
+        'grunt/**/*.js',
         'src/**/*.js',
+        'test/**/*.js',
         '!src/public/bower_components/**'
       ]
     },
@@ -53,16 +58,19 @@ module.exports = function(grunt) {
       },
       src: [
         'Gruntfile.js',
+        'grunt/**/*.js',
         'src/**/*.js',
+        'test/**/*.js',
         '!src/public/bower_components/**'
       ]
     },
     githooks: {
       all: {
         options: {
-          endMarker: ''
+            endMarker: ''
         },
         'pre-commit': 'analyze',
+        'pre-push': 'test',
         'post-checkout': 'shell:gitLog',
         'post-commit': 'shell:gitLog',
         'post-merge': 'shell:gitLog shell:npmInstall'
@@ -94,6 +102,37 @@ module.exports = function(grunt) {
         command: 'vagrant ssh -c "cd /vagrant/dist && pm2 start pm2.json"'
       }
     },
+    mochaTest: {
+      all: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/**/*Test.js', '!test/public/js/**/*Test.js']
+      }
+    },
+    karma: {
+      client: {
+        configFile: 'karma.conf.js'
+      }
+    },
+    stylus: {
+      compile: {
+        options: {
+          compress: true,
+          paths: ['source/stylus']
+        },
+        files: {
+          'public/css/style.css': 'public/stylus/style.styl'
+        }
+      }
+    },
+    autoprefixer: {
+      compile: {
+        files: {
+          'public/css/style.css': 'public/css/style.css'
+        },
+      },
+    }
   });
 
   grunt.registerTask('default', ['test']);
