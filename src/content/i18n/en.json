@@ -1,0 +1,11 @@
+{
+  "site": {
+    "language": "en",
+    "title": "StudioVictory",
+    "meta": {
+      "abstract": "Learn to code",
+      "description": "Learn to code",
+      "keywords": "HTML5, JavaScript, Node.js"
+    }
+  }
+}

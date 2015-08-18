@@ -1,7 +1,7 @@
 ---
 production: &default
   serverPort: 3000
-  baseUrl: http://www.studiovictory.com
+  baseUrl: http://www.studiovictory2.com
   baseApi: /api/
   views:
     engine: .hbs
@@ -17,18 +17,20 @@ production: &default
   languages:
     default: en
     list: [en, es, fr, pt, jp]
+  security:
+    secret: stud10v1ct0ry.com
 
 stage: &stage
   <<: *default
-  baseUrl: http://stage.studiovictory.com
+  baseUrl: http://stage.studiovictory2.com
 
 latest: &latest
   <<: *stage
-  baseUrl: http://latest.studiovictory.com
+  baseUrl: http://latest.studiovictory2.com
 
 development:
   <<: *latest
-  baseUrl: http://local.studiovictory.com
+  baseUrl: http://local.studiovictory2.com
   html:
     minify: false
     css:

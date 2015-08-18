@@ -4,9 +4,11 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>StudioVictory.com</title>
+        <title>{{ __.site.title }}</title>
 
-        <link href="/css/style.css" rel="stylesheet" />
+        {{#css}}
+            <link href="{{ this }}" rel="stylesheet" />
+        {{/css}}
         <link rel="shortcut icon" href="images/layout/favicon.png">
     </head>
 
