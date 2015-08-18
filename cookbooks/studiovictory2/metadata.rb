@@ -1,4 +1,4 @@
-name             'studiovictory'
+name             'studiovictory2'
 maintainer       'Carlos Santana'
 maintainer_email 'carlos@milkzoft.com'
 license          'MIT'

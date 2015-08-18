@@ -1,9 +1,6 @@
 'use strict';
 
 module.exports = function(grunt) {
-  grunt.loadNpmTasks('grunt-autoprefixer');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-githooks');
@@ -15,29 +12,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    clean: {
-      all: {
-        src: 'dist'
-      },
-    },
-    copy: {
-      all: {
-        expand: true,
-        cwd: '',
-        src: [
-          '.jshintrc',
-          '.jscsrc',
-          '.bowerrc',
-          '*.*',
-          './bin/**/*',
-          './node_modules/**/*',
-          './src/**/*',
-          './grunt/**/*',
-          './logs/**/*'
-        ],
-        dest: 'dist'
-      }
-    },
     jscs: {
       options: {
         config: '.jscsrc',
@@ -97,9 +71,6 @@ module.exports = function(grunt) {
       },
       vagrantStart: {
         command: 'vagrant ssh -c "cd /vagrant && pm2 start pm2.json"'
-      },
-      vagrantStartDist: {
-        command: 'vagrant ssh -c "cd /vagrant/dist && pm2 start pm2.json"'
       }
     },
     mochaTest: {
@@ -125,18 +96,18 @@ module.exports = function(grunt) {
           'public/css/style.css': 'public/stylus/style.styl'
         }
       }
-    },
-    autoprefixer: {
-      compile: {
-        files: {
-          'public/css/style.css': 'public/css/style.css'
-        },
-      },
     }
   });
 
+  // Code tasks
   grunt.registerTask('default', ['test']);
   grunt.registerTask('test', 'Runs unit tests', ['mochaTest', 'karma:client']);
   grunt.registerTask('analyze', 'Validates code style', ['jshint', 'jscs']);
-  grunt.registerTask('deploy', 'Deploys code', ['clean', 'copy', 'stylus']);
+
+  // Server tasks
+  grunt.registerTask('status', 'Shows status of node processes on Vagrant VM', ['shell:vagrantStatus']);
+  grunt.registerTask('stop', 'Stop node processes on Vagrant VM', ['shell:vagrantStop']);
+  grunt.registerTask('start', 'Start node processes on Vagrant VM', ['shell:vagrantStart']);
+  grunt.registerTask('restart', 'Restart node processes on Vagrant VM', ['stop', 'start']);
+  grunt.registerTask('logs', 'Tail logs for all pm2 processes', ['shell:vagrantLogs']);
 };

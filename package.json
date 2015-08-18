@@ -21,16 +21,12 @@
     "js-yaml": "latest",
     "lodash": "latest",
     "morgan": "~1.5.1",
-    "nib": "latest",
     "stylus": "latest"
   },
   "devDependencies": {
     "bower": "latest",
     "chai": "latest",
     "grunt": "latest",
-    "grunt-autoprefixer": "latest",
-    "grunt-contrib-clean": "latest",
-    "grunt-contrib-copy": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-stylus": "latest",
     "grunt-githooks": "latest",

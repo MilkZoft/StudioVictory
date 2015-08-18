@@ -1,17 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VM = 'studiovictory'
+VM = 'studiovictory2'
 
 Vagrant.configure(2) do |config|
   # Selecting Cent OS 7.0 Box
   config.vm.box = 'chef/centos-7.0'
   config.vbguest.auto_update = false
 
-  # Proxy network, Node: 3000 & Apache: 9898
-  config.vm.network :forwarded_port, guest: 3000, host: 9898, auto_correct: true
+  # Proxy network, Node: 3000 & Apache: 9899
+  config.vm.network :forwarded_port, guest: 3000, host: 9899, auto_correct: true
   config.vm.network :forwarded_port, guest: 22, host: 2200, id: "ssh", disabled: "true"
-  config.vm.network :forwarded_port, guest: 22, host: 2201
+  config.vm.network :forwarded_port, guest: 22, host: 2202
 
   # Virtualbox setup
   config.vm.define VM
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
     chef.json = {
       :nodejs => {
         :install_method => "package",
-        :npm => "2.11.2"
+        :npm => "2.13.4"
       },
     }
   end
