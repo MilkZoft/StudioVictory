@@ -21,7 +21,8 @@
     "js-yaml": "latest",
     "lodash": "latest",
     "morgan": "~1.5.1",
-    "stylus": "latest"
+    "stylus": "latest",
+    "html-minifier": "latest"
   },
   "devDependencies": {
     "bower": "latest",

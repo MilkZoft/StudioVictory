@@ -4,13 +4,11 @@ var config = require('./lib/config');
 var availableLanguages = config().languages.list.join('|');
 var defaultController;
 var homeController;
-var usersController;
 
 module.exports = function(app) {
   // Loading controllers
   defaultController = require('./controllers/' + config().controllers.default);
   homeController    = require('./controllers/home');
-  usersController   = require('./controllers/users');
 
   // Loading necessary helpers
   var i18n = require('./lib/helpers/i18n');
@@ -32,8 +30,6 @@ module.exports = function(app) {
       '/css/style.css'
     ];
 
-    console.log(res.locals);
-
     res.locals.js = [];
 
     next();
@@ -41,8 +37,8 @@ module.exports = function(app) {
 
   // Controllers dispatch
   app.use('/', defaultController);
-  app.use('/home', homeController);
-  app.use('/users', usersController);
+  app.use('/:language(' + availableLanguages + ')', defaultController);
+  app.use('/:language(' + availableLanguages + ')/home', homeController);
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {

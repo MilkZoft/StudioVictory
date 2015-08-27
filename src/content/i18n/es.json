@@ -1,11 +1,15 @@
 {
   "site": {
     "language": "en",
-    "title": "StudioVictory",
+    "title": "StudioVictory - Español",
     "meta": {
       "abstract": "Aprende a programar",
       "description": "Aprende a programar",
       "keywords": "HTML5, JavaScript, Node.js"
     }
-  }
+  },
+  "welcome": "Bienvenido a",
+  "visited": "Has visitado este sitio",
+  "time": "vez",
+  "times": "veces"
 }
